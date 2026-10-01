@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daniil Zabolotnyi — Reels, TikTok & Shorts Editor</title>
+  <meta name="description" content="Daniil Zabolotnyi edits short vertical videos for experts, brands and creators: strong hooks, tight pacing, captions and sound — ready for Instagram Reels, TikTok and YouTube Shorts.">
+  <meta name="theme-color" content="#0E0E10">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Daniil Zabolotnyi — Reels, TikTok & Shorts Editor">
+  <meta property="og:description" content="Short videos people watch to the end. Vertical edits with a strong hook, tight pacing, captions and sound.">
+  <!-- <meta property="og:url" content="https://example.com/"> -->
+  <!-- <meta property="og:image" content="https://example.com/og-image.jpg"> -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0E0E10;
+      --card: #17171A;
+      --line: #26262B;
+      --divider: #222226;
+      --text: #F2F0EA;
+      --soft: #C9C7C0;
+      --muted: #A8A6A0;
+      --accent: #D4FF3A;
+      --ink: #0E0E10;
+
+      --font-head: "Unbounded", system-ui, sans-serif;
+      --font-body: "Manrope", system-ui, sans-serif;
+      --radius-card: 20px;
+      --header-h: 72px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, video, svg { display: block; max-width: 100%; }
+    a { color: inherit; }
+    h1, h2, h3 { font-family: var(--font-head); margin: 0; line-height: 1.05; letter-spacing: -0.03em; }
+    p { margin: 0; }
+    ul { margin: 0; padding: 0; list-style: none; }
+
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+    .skip-link {
+      position: absolute; left: 16px; top: -100px; z-index: 100;
+      background: var(--accent); color: var(--ink); padding: 12px 18px; border-radius: 999px;
+      font-weight: 700; text-decoration: none;
+    }
+    .skip-link:focus { top: 12px; }
+
+    .container { max-width: 1200px; margin-inline: auto; padding-inline: 20px; }
+    .accent { color: var(--accent); }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 12px 26px;
+      border-radius: 999px; border: 1.5px solid transparent;
+      font: 700 16px/1.2 var(--font-body);
+      text-decoration: none; cursor: pointer;
+      transition: background-color .2s, color .2s, border-color .2s, transform .2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn--accent { background: var(--accent); color: var(--ink); }
+    .btn--accent:hover { background: #e2ff7a; }
+    .btn--outline { border-color: #3a3a40; color: var(--text); background: transparent; }
+    .btn--outline:hover { border-color: var(--text); }
+    .btn--dark { background: var(--ink); color: var(--accent); }
+    .btn--dark:hover { background: #222226; }
+
+    /* ---------- Header ---------- */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(14, 14, 16, .72);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--divider);
+    }
+    .site-header__inner { display: flex; align-items: center; gap: 24px; min-height: var(--header-h); }
+    .logo { font: 700 18px/1 var(--font-head); letter-spacing: -0.02em; text-decoration: none; white-space: nowrap; }
+    .nav { margin-left: auto; }
+    .nav ul { display: flex; gap: 6px; }
+    .nav a {
+      display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px;
+      color: var(--soft); text-decoration: none; font-weight: 600; font-size: 15px; border-radius: 999px;
+    }
+    .nav a:hover { color: var(--text); }
+    .site-header .btn { padding: 10px 22px; font-size: 15px; }
+
+    /* ---------- Sections ---------- */
+    .section { padding-block: 80px; border-top: 1px solid var(--divider); }
+    section[id] { scroll-margin-top: var(--header-h); }
+    .eyebrow {
+      display: inline-block; margin-bottom: 18px;
+      color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+    }
+    .h2 { font-size: clamp(30px, 4.2vw, 54px); font-weight: 800; max-width: 16ch; }
+    .section-head { margin-bottom: 48px; }
+    .section-head--split { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end; }
+    .section-head__note { color: var(--muted); max-width: 40ch; }
+
+    /* ---------- Hero ---------- */
+    .hero { padding-block: 72px 96px; }
+    .hero__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--card);
+      font-weight: 600; font-size: 14px; color: var(--soft);
+    }
+    .badge__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+    .hero h1 { margin-top: 24px; font-size: clamp(40px, 6.2vw, 84px); font-weight: 800; }
+    .hero__lead { margin-top: 24px; font-size: clamp(17px, 1.5vw, 19px); color: var(--soft); max-width: 36em; }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .hero__meta { margin-top: 20px; font-size: 14px; color: var(--muted); }
+    .hero__reels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-block: 32px; }
+    .hero__reels .reel:nth-child(1) { transform: translateY(24px); }
+    .hero__reels .reel:nth-child(2) { transform: translateY(-16px); }
+    .hero__reels .reel:nth-child(3) { transform: translateY(32px); }
+
+    /* ---------- Reel card ---------- */
+    .reel {
+      position: relative; display: block; width: 100%;
+      aspect-ratio: 9 / 16; overflow: hidden;
+      border-radius: 20px; border: 1px solid rgba(255, 255, 255, .06);
+      background: #2A2433; color: var(--text);
+      padding: 0; cursor: pointer; font: inherit; text-align: left;
+    }
+    .reel.tone-1 { background: #2A2433; }
+    .reel.tone-2 { background: #1E2B2A; }
+    .reel.tone-3 { background: #33281F; }
+    .reel.tone-4 { background: #22263A; }
+    .reel.tone-5 { background: #2E2A1C; }
+    .reel.tone-6 { background: #2B1F27; }
+    .reel__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .reel__tag {
+      position: absolute; top: 10px; left: 10px; z-index: 2;
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(14, 14, 16, .7); color: var(--text);
+      font-size: 12px; font-weight: 700; line-height: 1.5; white-space: nowrap;
+    }
+    .reel__play {
+      position: absolute; top: 50%; left: 50%; z-index: 2;
+      width: 56px; height: 56px; margin: -28px 0 0 -28px;
+      display: grid; place-items: center; border-radius: 50%;
+      background: rgba(242, 240, 234, .14); border: 1px solid rgba(242, 240, 234, .3);
+      transition: background-color .2s, transform .2s, opacity .2s;
+    }
+    .reel__play svg { width: 22px; height: 22px; fill: var(--text); margin-left: 3px; }
+    .reel:hover .reel__play { background: var(--accent); transform: scale(1.06); }
+    .reel:hover .reel__play svg { fill: var(--ink); }
+    .reel__caption {
+      position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 2;
+      font-size: 13px; color: var(--soft); font-weight: 600;
+    }
+    .reel.is-playing .reel__play,
+    .reel.is-playing .reel__caption { opacity: 0; }
+    .reel.has-poster .reel__caption { display: none; }
+    .hero__reels .reel__play { width: 48px; height: 48px; margin: -24px 0 0 -24px; }
+
+    /* ---------- Work ---------- */
+    .work-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .work-item h3 { margin-top: 14px; font-size: 15px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+    .work-item p { margin-top: 6px; font-size: 14px; color: var(--muted); line-height: 1.45; }
+
+    /* ---------- Features ---------- */
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 28px; }
+    .feature__num { font: 700 14px/1 var(--font-head); letter-spacing: -0.02em; color: var(--accent); }
+    .feature h3 { margin-top: 28px; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+    .feature p { margin-top: 10px; color: var(--muted); font-size: 15px; }
+
+    /* ---------- Packages ---------- */
+    .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+    .plan { display: flex; flex-direction: column; border-radius: 22px; padding: 32px 28px; position: relative; }
+    .plan__name { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .plan__price {
+      margin-top: 20px; font: 800 clamp(34px, 3.6vw, 46px)/1.1 var(--font-head); letter-spacing: -0.03em;
+    }
+    .plan__unit {
+      font: 600 15px/1.4 var(--font-body); letter-spacing: 0; color: var(--muted); white-space: nowrap;
+    }
+    .plan__sub { margin-top: 10px; color: var(--soft); font-size: 15px; }
+    .plan__list { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); display: grid; gap: 12px; }
+    .plan__list li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; }
+    .plan__list svg { width: 18px; height: 18px; flex: none; margin-top: 3px; stroke: var(--accent); }
+    .plan__cta { margin-top: auto; padding-top: 32px; }
+    .plan__cta .btn { width: 100%; }
+    .plan__badge {
+      position: absolute; top: 28px; right: 24px;
+      padding: 6px 12px; border-radius: 999px; background: var(--ink); color: var(--accent);
+      font-size: 12px; font-weight: 700; letter-spacing: .02em;
+    }
+    .plan--accent { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+    .plan--accent .plan__unit,
+    .plan--accent .plan__sub { color: #3a4214; }
+    .plan--accent .plan__list { border-top-color: rgba(14, 14, 16, .18); }
+    .plan--accent .plan__list svg { stroke: var(--ink); }
+    .plan--accent :focus-visible { outline-color: var(--ink); }
+
+    /* ---------- Process ---------- */
+    .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: step; }
+    .step__num { font: 800 clamp(48px, 5vw, 64px)/1 var(--font-head); color: var(--accent); letter-spacing: -0.03em; }
+    .step h3 { margin-top: 24px; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+    .step p { margin-top: 10px; color: var(--muted); font-size: 15px; }
+
+    /* ---------- About ---------- */
+    .about { display: grid; grid-template-columns: 120px 1fr; gap: 40px; align-items: start; max-width: 880px; }
+    .about__photo {
+      width: 120px; height: 120px; border-radius: 50%;
+      border: 1.5px dashed #4a4a52; display: grid; place-items: center;
+      color: var(--muted); font-size: 13px; text-align: center;
+    }
+    .about__text { margin-top: 20px; font-size: clamp(17px, 1.6vw, 20px); color: var(--soft); }
+    .placeholder {
+      margin-top: 16px; padding: 14px 18px; border: 1px dashed #3a3a40; border-radius: 14px;
+      color: var(--muted); font-size: 15px;
+    }
+    .about blockquote { margin: 24px 0 0; padding: 20px 22px; border-left: 3px solid var(--accent); background: var(--card); border-radius: 0 14px 14px 0; color: var(--muted); font-style: italic; }
+
+    /* ---------- FAQ ---------- */
+    .faq { max-width: 880px; border-top: 1px solid var(--line); }
+    .faq details { border-bottom: 1px solid var(--line); }
+    .faq summary {
+      display: flex; justify-content: space-between; align-items: center; gap: 20px;
+      padding: 24px 0; cursor: pointer; list-style: none;
+      font: 700 clamp(17px, 1.8vw, 20px)/1.3 var(--font-head); letter-spacing: -0.02em;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq__icon { position: relative; width: 36px; height: 36px; flex: none; border: 1px solid var(--line); border-radius: 50%; transition: transform .25s, background-color .2s; }
+    .faq__icon::before, .faq__icon::after {
+      content: ""; position: absolute; top: 50%; left: 50%; width: 14px; height: 2px; margin: -1px 0 0 -7px;
+      background: var(--text); border-radius: 2px;
+    }
+    .faq__icon::after { transform: rotate(90deg); }
+    .faq details[open] .faq__icon { transform: rotate(45deg); background: var(--accent); border-color: var(--accent); }
+    .faq details[open] .faq__icon::before, .faq details[open] .faq__icon::after { background: var(--ink); }
+    .faq__answer { padding: 0 56px 24px 0; color: var(--soft); }
+
+    /* ---------- Contact ---------- */
+    .contact {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      background: var(--accent); color: var(--ink); border-radius: 28px;
+      padding: clamp(28px, 5vw, 64px);
+    }
+    .contact :focus-visible { outline-color: var(--ink); }
+    .contact .h2 { max-width: 12ch; }
+    .contact__text { margin-top: 20px; font-size: 18px; max-width: 34ch; }
+    .contact__links { margin-top: 28px; display: grid; gap: 4px; }
+    .contact__links a {
+      display: inline-flex; gap: 10px; align-items: baseline; min-height: 44px; padding-block: 8px;
+      font-weight: 700; text-decoration: none; width: fit-content;
+    }
+    .contact__links a span { font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+    .form { display: grid; gap: 16px; align-content: start; }
+    .field { display: grid; gap: 6px; }
+    .field label { font-weight: 700; font-size: 14px; }
+    .field input, .field textarea {
+      width: 100%; min-height: 52px; padding: 14px 16px;
+      border: 1.5px solid rgba(14, 14, 16, .35); border-radius: 14px;
+      background: rgba(255, 255, 255, .35); color: var(--ink);
+      font: 500 16px/1.4 var(--font-body);
+    }
+    .field textarea { min-height: 130px; resize: vertical; }
+    .field input::placeholder, .field textarea::placeholder { color: #4a5220; }
+    .field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; border-color: var(--ink); }
+    .form__pkg { font-size: 14px; font-weight: 600; }
+    .form .btn { width: 100%; }
+    .form__status { font-weight: 700; min-height: 1.6em; }
+
+    /* ---------- Footer ---------- */
+    .site-footer { border-top: 1px solid var(--divider); padding-block: 32px; margin-top: 80px; }
+    .site-footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; color: var(--muted); font-size: 14px; }
+    .site-footer a { color: var(--soft); text-underline-offset: 3px; }
+    .site-footer a:hover { color: var(--accent); }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1024px) {
+      .work-grid { grid-template-columns: repeat(3, 1fr); row-gap: 28px; }
+      .feature-grid, .steps { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .hero__grid, .contact { grid-template-columns: 1fr; }
+      .hero__reels { max-width: 520px; }
+      .price-grid { grid-template-columns: 1fr; max-width: 520px; }
+      .section-head--split { grid-template-columns: 1fr; gap: 16px; }
+    }
+    @media (max-width: 760px) {
+      .nav { display: none; }
+      .site-header .btn { margin-left: auto; }
+    }
+    @media (max-width: 640px) {
+      .section { padding-block: 64px; }
+      .hero { padding-block: 48px 64px; }
+      .work-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; row-gap: 24px; }
+      .feature-grid, .steps { grid-template-columns: 1fr; }
+      .hero__reels { gap: 10px; }
+      .hero__reels .reel__play { width: 40px; height: 40px; margin: -20px 0 0 -20px; }
+      .hero__reels .reel__play svg { width: 18px; height: 18px; }
+      .hero__reels .reel__tag { font-size: 11px; padding: 3px 8px; top: 8px; left: 8px; }
+      .hero__reels .reel__caption { font-size: 11px; left: 8px; bottom: 8px; }
+      .about { grid-template-columns: 1fr; gap: 24px; }
+      .faq__answer { padding-right: 0; }
+      .logo { font-size: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      .btn:hover, .reel:hover .reel__play { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="logo" href="#top">Daniil Zabolotnyi<span class="accent">.</span></a>
+      <nav class="nav" aria-label="Main">
+        <ul>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#packages">Packages</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--accent" href="#contact">Book a call</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="container hero__grid">
+        <div>
+          <span class="badge"><span class="badge__dot" aria-hidden="true"></span>Reels · TikTok · Shorts editor</span>
+          <h1 id="hero-title">Short videos people watch <span class="accent">to the end.</span></h1>
+          <p class="hero__lead">I turn your raw footage into vertical videos with a strong hook, tight pacing, captions and sound — ready to post on Instagram, TikTok and YouTube Shorts.</p>
+          <div class="hero__actions">
+            <a class="btn btn--accent" href="#contact">Start a project</a>
+            <a class="btn btn--outline" href="#work">See the work</a>
+          </div>
+          <p class="hero__meta">Reply within 24 hours · First draft in 48 hours</p>
+        </div>
+
+        <div class="hero__reels">
+          <button class="reel tone-1" type="button" data-src="" data-poster="" aria-label="Play Expert video">
+            <span class="reel__tag">Expert</span>
+            <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+            <span class="reel__caption">[Your video]</span>
+          </button>
+          <button class="reel tone-2" type="button" data-src="" data-poster="" aria-label="Play Brand video">
+            <span class="reel__tag">Brand</span>
+            <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+            <span class="reel__caption">[Your video]</span>
+          </button>
+          <button class="reel tone-3" type="button" data-src="" data-poster="" aria-label="Play Creator video">
+            <span class="reel__tag">Creator</span>
+            <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+            <span class="reel__caption">[Your video]</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <span class="eyebrow">Selected work</span>
+            <h2 class="h2" id="work-title">Edits for experts, brands and creators</h2>
+          </div>
+          <p class="section-head__note">Tap a video to play it with sound. Each card shows the niche and what the edit was built to do.</p>
+        </div>
+
+        <div class="work-grid">
+          <article class="work-item">
+            <button class="reel tone-1" type="button" data-src="" data-poster="" aria-label="Play video: Talking-head explainer">
+              <span class="reel__tag">Expert</span>
+              <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+              <span class="reel__caption">[Your video]</span>
+            </button>
+            <h3>Talking-head explainer</h3>
+            <p>Hook + captions for a coach</p>
+          </article>
+          <article class="work-item">
+            <button class="reel tone-2" type="button" data-src="" data-poster="" aria-label="Play video: Product showcase">
+              <span class="reel__tag">Brand</span>
+              <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+              <span class="reel__caption">[Your video]</span>
+            </button>
+            <h3>Product showcase</h3>
+            <p>Fast cuts for a launch</p>
+          </article>
+          <article class="work-item">
+            <button class="reel tone-3" type="button" data-src="" data-poster="" aria-label="Play video: Café menu reel">
+              <span class="reel__tag">Food</span>
+              <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+              <span class="reel__caption">[Your video]</span>
+            </button>
+            <h3>Café menu reel</h3>
+            <p>Sound-led b-roll edit</p>
+          </article>
+          <article class="work-item">
+            <button class="reel tone-4" type="button" data-src="" data-poster="" aria-label="Play video: Workout tips">
+              <span class="reel__tag">Fitness</span>
+              <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+              <span class="reel__caption">[Your video]</span>
+            </button>
+            <h3>Workout tips</h3>
+            <p>Text overlays, beat sync</p>
+          </article>
+          <article class="work-item">
+            <button class="reel tone-5" type="button" data-src="" data-poster="" aria-label="Play video: Apartment tour">
+              <span class="reel__tag">Real estate</span>
+              <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+              <span class="reel__caption">[Your video]</span>
+            </button>
+            <h3>Apartment tour</h3>
+            <p>Smooth walkthrough</p>
+          </article>
+          <article class="work-item">
+            <button class="reel tone-6" type="button" data-src="" data-poster="" aria-label="Play video: Podcast clip">
+              <span class="reel__tag">Podcast</span>
+              <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
+              <span class="reel__caption">[Your video]</span>
+            </button>
+            <h3>Podcast clip</h3>
+            <p>Best moment, cut to 30s</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">In every edit</span>
+          <h2 class="h2" id="features-title">Built for retention, not just to look nice</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="card feature">
+            <span class="feature__num">01</span>
+            <h3>Hook in the first 2 seconds</h3>
+            <p>The strongest line or shot goes first, so the video opens with its best moment.</p>
+          </article>
+          <article class="card feature">
+            <span class="feature__num">02</span>
+            <h3>Animated captions</h3>
+            <p>Readable animated captions that follow what is being said.</p>
+          </article>
+          <article class="card feature">
+            <span class="feature__num">03</span>
+            <h3>Pacing and cuts</h3>
+            <p>Pauses and filler are cut, so the video keeps moving.</p>
+          </article>
+          <article class="card feature">
+            <span class="feature__num">04</span>
+            <h3>Music and sound design</h3>
+            <p>Music and sound effects chosen to carry the rhythm of the edit.</p>
+          </article>
+          <article class="card feature">
+            <span class="feature__num">05</span>
+            <h3>Color and look</h3>
+            <p>Clean color correction and a consistent look across your videos.</p>
+          </article>
+          <article class="card feature">
+            <span class="feature__num">06</span>
+            <h3>Ready to post</h3>
+            <p>Final vertical files, exported and ready to upload.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Packages -->
+    <section class="section" id="packages" aria-labelledby="packages-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Packages</span>
+          <h2 class="h2" id="packages-title">Pick a volume, I handle the rest</h2>
+        </div>
+        <div class="price-grid">
+          <article class="card plan">
+            <h3 class="plan__name">Starter</h3>
+            <p class="plan__price">$160 <span class="plan__unit">· $40 per video</span></p>
+            <p class="plan__sub">4 videos · up to 60 s each</p>
+            <ul class="plan__list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Hook, captions, music</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>1 round of revisions</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Delivery in 3–4 days</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Cover frames included</li>
+            </ul>
+            <div class="plan__cta"><a class="btn btn--outline" href="#contact" data-package="Starter">Choose Starter</a></div>
+          </article>
+
+          <article class="card plan plan--accent">
+            <span class="plan__badge">Most picked</span>
+            <h3 class="plan__name">Growth</h3>
+            <p class="plan__price">$390<span class="plan__unit">/month</span></p>
+            <p class="plan__sub">12 videos per month · ~$32 per video</p>
+            <ul class="plan__list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Everything in Starter</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>2 rounds of revisions</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Content plan and hook ideas</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Priority turnaround</li>
+            </ul>
+            <div class="plan__cta"><a class="btn btn--dark" href="#contact" data-package="Growth">Choose Growth</a></div>
+          </article>
+
+          <article class="card plan">
+            <h3 class="plan__name">Custom</h3>
+            <p class="plan__price"><span class="plan__unit">from</span> $500</p>
+            <p class="plan__sub">Ads, launches, long-form to shorts</p>
+            <ul class="plan__list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Volume that fits your plan</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Motion graphics on request</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Podcast and webinar cutdowns</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>Fixed monthly slot</li>
+            </ul>
+            <div class="plan__cta"><a class="btn btn--outline" href="#contact" data-package="Custom">Get a quote</a></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section" id="process" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2 class="h2" id="process-title">From raw footage to posted in four steps</h2>
+        </div>
+        <ol class="steps">
+          <li class="card step">
+            <span class="step__num" aria-hidden="true">01</span>
+            <h3>Brief</h3>
+            <p>You tell me about your account and what you need.</p>
+          </li>
+          <li class="card step">
+            <span class="step__num" aria-hidden="true">02</span>
+            <h3>Footage</h3>
+            <p>You send me the raw footage.</p>
+          </li>
+          <li class="card step">
+            <span class="step__num" aria-hidden="true">03</span>
+            <h3>Edit</h3>
+            <p>First draft in 48 hours.</p>
+          </li>
+          <li class="card step">
+            <span class="step__num" aria-hidden="true">04</span>
+            <h3>Revisions &amp; delivery</h3>
+            <p>You leave notes, I revise, and you get final files ready to post.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" aria-labelledby="about-title">
+      <div class="container">
+        <div class="about">
+          <div class="about__photo" role="img" aria-label="Photo placeholder">[Your photo]</div>
+          <div>
+            <h2 class="h2" id="about-title">Hi, I'm Daniil</h2>
+            <p class="about__text">I edit short vertical videos for experts, small brands and creators. You work with me directly — no account managers, no handoffs.</p>
+            <p class="placeholder">[Add 1–2 lines: experience, tools, niches]</p>
+            <blockquote>[Client testimonial — add a real quote with the client's name and link]</blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">FAQ</span>
+          <h2 class="h2" id="faq-title">Questions, answered</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Do you film the videos too?<span class="faq__icon" aria-hidden="true"></span></summary>
+            <p class="faq__answer">[Answer: do you film the videos, or only edit footage you send? — add your answer]</p>
+          </details>
+          <details>
+            <summary>How fast do I get the first video?<span class="faq__icon" aria-hidden="true"></span></summary>
+            <p class="faq__answer">The first draft is ready within 48 hours after I get the footage. A full Starter pack is delivered in 3–4 days.</p>
+          </details>
+          <details>
+            <summary>What if I don't like the edit?<span class="faq__icon" aria-hidden="true"></span></summary>
+            <p class="faq__answer">Revision rounds are included in every package: 1 round in Starter and 2 rounds in Growth. Leave your notes and I will rework the video.</p>
+          </details>
+          <details>
+            <summary>Which music do you use?<span class="faq__icon" aria-hidden="true"></span></summary>
+            <p class="faq__answer">Trending sounds or licensed tracks, depending on the video.</p>
+          </details>
+          <details>
+            <summary>How do I pay?<span class="faq__icon" aria-hidden="true"></span></summary>
+            <p class="faq__answer">50% upfront and 50% on delivery. Monthly plans are paid at the start of the month. I accept Card, PayPal, Wise or USDT.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="contact">
+          <div>
+            <h2 class="h2" id="contact-title">Let's make your next reel.</h2>
+            <p class="contact__text">Tell me about your account and send a link to the footage. I'll reply within 24 hours with an estimate.</p>
+            <div class="contact__links">
+              <a href="https://t.me/your_handle" target="_blank" rel="noopener">Telegram <span>[@your_handle]</span></a>
+              <a href="https://instagram.com/your_handle" target="_blank" rel="noopener">Instagram <span>[@your_handle]</span></a>
+              <a href="mailto:you@email.com">Email <span>[you@email.com]</span></a>
+            </div>
+          </div>
+
+          <!-- To receive requests by email: create a form at https://formspree.io,
+               then paste its endpoint into action, e.g. action="https://formspree.io/f/xxxxxxx".
+               While action is empty, the form only shows a thank-you message. -->
+          <form class="form" action="" method="POST">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="f-contact">Telegram or email</label>
+              <input id="f-contact" name="contact" type="text" placeholder="@handle or you@email.com" required>
+            </div>
+            <div class="field">
+              <label for="f-message">Your account and what you need</label>
+              <textarea id="f-message" name="message" placeholder="Link to your account, how many videos, link to footage"></textarea>
+            </div>
+            <input type="hidden" name="package" id="f-package" value="">
+            <p class="form__pkg" id="f-package-note" hidden></p>
+            <button class="btn btn--dark" type="submit">Send request</button>
+            <p class="form__status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>© 2026 Daniil Zabolotnyi · Reels &amp; TikTok editing</p>
+      <p>Part of <a href="https://www.zabolotnyistudio.com/" target="_blank" rel="noopener">Zabolotnyi Studio</a></p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      // ----- Video cards -----
+      var current = null;
+
+      document.querySelectorAll('.reel').forEach(function (card) {
+        var poster = card.dataset.poster;
+        var label = card.getAttribute('aria-label') || '';
+
+        if (poster) {
+          var img = document.createElement('img');
+          img.src = poster;
+          img.alt = '';
+          img.loading = 'lazy';
+          img.className = 'reel__media';
+          card.prepend(img);
+          card.classList.add('has-poster');
+        }
+
+        card.addEventListener('click', function () {
+          var src = card.dataset.src;
+          if (!src) return;
+
+          var video = card.querySelector('video');
+          if (!video) {
+            video = document.createElement('video');
+            video.setAttribute('playsinline', '');
+            video.playsInline = true;
+            video.preload = 'none';
+            video.src = src;
+            if (poster) video.poster = poster;
+            video.className = 'reel__media';
+            video.addEventListener('play', function () {
+              card.classList.add('is-playing');
+              card.setAttribute('aria-label', label.replace(/^Play/, 'Pause'));
+            });
+            video.addEventListener('pause', function () {
+              card.classList.remove('is-playing');
+              card.setAttribute('aria-label', label);
+            });
+            card.prepend(video);
+          }
+
+          if (video.paused) {
+            if (current && current !== video) current.pause();
+            current = video;
+            var p = video.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            video.pause();
+          }
+        });
+      });
+
+      // ----- Package buttons -> hidden form field -----
+      var pkgInput = document.getElementById('f-package');
+      var pkgNote = document.getElementById('f-package-note');
+
+      document.querySelectorAll('[data-package]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          pkgInput.value = btn.dataset.package;
+          pkgNote.textContent = 'Selected package: ' + btn.dataset.package;
+          pkgNote.hidden = false;
+        });
+      });
+
+      // ----- Form -----
+      var form = document.querySelector('.form');
+      var status = form.querySelector('.form__status');
+
+      form.addEventListener('submit', function (e) {
+        if (form.getAttribute('action')) return; // Formspree endpoint set: submit normally
+        e.preventDefault();
+        status.textContent = "Thanks! I'll get back to you within 24 hours.";
+        form.reset();
+        pkgInput.value = '';
+        pkgNote.hidden = true;
+      });
+    })();
+  </script>
+</body>
+</html>
