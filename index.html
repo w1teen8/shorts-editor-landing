@@ -224,6 +224,8 @@
       border: 1.5px dashed #4a4a52; display: grid; place-items: center;
       color: var(--muted); font-size: 13px; text-align: center;
     }
+    .about__photo--img { position: relative; overflow: hidden; border: 1px solid var(--line); background: var(--card); }
+    .about__photo--img img { position: absolute; max-width: none; height: auto; width: 288%; left: -150%; top: -160%; }
     .about__text { margin-top: 20px; font-size: clamp(17px, 1.6vw, 20px); color: var(--soft); }
     .placeholder {
       margin-top: 16px; padding: 14px 18px; border: 1px dashed #3a3a40; border-radius: 14px;
@@ -576,7 +578,7 @@
     <section class="section" aria-labelledby="about-title">
       <div class="container">
         <div class="about">
-          <div class="about__photo" role="img" aria-label="Photo placeholder">[Your photo]</div>
+          <div class="about__photo about__photo--img"><img src="logo.jpg" alt="Daniil Zabolotnyi" width="720" height="1280" loading="lazy"></div>
           <div>
             <h2 class="h2" id="about-title">Hi, I'm Daniil</h2>
             <p class="about__text">I edit short vertical videos for experts, small brands and creators. You work with me directly — no account managers, no handoffs.</p>
