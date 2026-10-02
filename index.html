@@ -115,7 +115,7 @@
 
     /* ---------- Hero ---------- */
     .hero { padding-block: 72px 96px; }
-    .hero__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
+    .hero__grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; align-items: center; }
     .badge {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 8px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--card);
@@ -126,7 +126,7 @@
     .hero__lead { margin-top: 24px; font-size: clamp(17px, 1.5vw, 19px); color: var(--soft); max-width: 36em; }
     .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
     .hero__meta { margin-top: 20px; font-size: 14px; color: var(--muted); }
-    .hero__reels { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-block: 32px; }
+    .hero__reels { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding-block: 40px; }
     .hero__reels .reel:nth-child(1) { top: 24px; }
     .hero__reels .reel:nth-child(2) { top: -16px; }
     .hero__reels .reel:nth-child(3) { top: 32px; }
@@ -293,16 +293,55 @@
     .site-footer a { color: var(--soft); text-underline-offset: 3px; }
     .site-footer a:hover { color: var(--accent); }
 
-    /* ---------- TikTok embed ---------- */
-    .reel.is-embed { cursor: default; }
-    .reel__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
-    .reel__close {
-      position: absolute; top: 8px; right: 8px; z-index: 3;
-      width: 36px; height: 36px; display: grid; place-items: center;
-      border: 0; border-radius: 50%; background: rgba(14, 14, 16, .8); color: var(--text); cursor: pointer;
+    /* ---------- Live clips ---------- */
+    .reel.is-live .reel__caption, .reel.is-live .reel__play { opacity: 0; }
+    .reel__sound {
+      position: absolute; right: 10px; bottom: 10px; z-index: 3; width: 34px; height: 34px;
+      display: grid; place-items: center; border-radius: 50%; background: rgba(14, 14, 16, .7); color: var(--text);
+      opacity: 0; transition: opacity .3s, background-color .2s, color .2s;
     }
-    .reel__close svg { width: 14px; height: 14px; stroke: currentColor; }
-    .reel__close:hover { background: var(--accent); color: var(--ink); }
+    .reel__sound svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .reel__sound .on { display: none; }
+    .reel.is-live.is-loaded .reel__sound { opacity: 1; }
+    .reel.has-sound .reel__sound { background: var(--accent); color: var(--ink); }
+    .reel.has-sound .reel__sound .on { display: block; }
+    .reel.has-sound .reel__sound .off { display: none; }
+
+    /* Live player entrance: scanline while loading, lime shutter when ready */
+    .reel.is-live .reel__media { opacity: 0; transition: opacity .3s .4s; }
+    .reel.is-live::before {
+      content: ""; position: absolute; left: 0; right: 0; top: 0; height: 28%; z-index: 1;
+      background: rgba(212, 255, 58, .1); border-bottom: 1px solid rgba(212, 255, 58, .5);
+      animation: scan 1.3s linear infinite;
+    }
+    .reel.is-live::after {
+      content: ""; position: absolute; inset: 0; z-index: 4; background: var(--accent);
+      transform: scaleY(0); pointer-events: none;
+    }
+    .reel.is-live.is-loaded::before { display: none; }
+    .reel.is-live.is-loaded .reel__media { opacity: 1; }
+    .reel.is-live.is-loaded::after { animation: shutter .9s cubic-bezier(.7, 0, .2, 1) forwards; }
+    @keyframes scan { from { transform: translateY(-100%); } to { transform: translateY(360%); } }
+    @keyframes shutter {
+      0% { transform: scaleY(0); transform-origin: 50% 100%; }
+      45% { transform: scaleY(1); transform-origin: 50% 100%; }
+      55% { transform: scaleY(1); transform-origin: 50% 0; }
+      100% { transform: scaleY(0); transform-origin: 50% 0; }
+    }
+
+    /* Work cards: rise with a slight turn, a curtain lifts bottom to top, the clip settles out of a zoom */
+    .js .work-item[data-reveal] {
+      transform: translateY(120px) rotate(-6deg) scale(.92); transform-origin: 0 100%;
+      transition-duration: .9s, 1.3s;
+    }
+    .js .work-item[data-reveal] .reel {
+      clip-path: inset(100% 0 0 0 round 20px);
+      transition: clip-path 1.1s cubic-bezier(.7, 0, .2, 1) calc(var(--d, 0) * 110ms + .25s), transform .35s ease;
+    }
+    .js .work-item[data-reveal] .reel video { scale: 1.35; transition: scale 1.6s cubic-bezier(.2, .8, .2, 1) calc(var(--d, 0) * 110ms + .35s), opacity .3s .4s; }
+    .js .work-item[data-reveal].in .reel { clip-path: inset(0 round 20px); }
+    .js .work-item[data-reveal].in .reel video { scale: 1; }
+    .js .work-item[data-reveal].in { transform: none; }
 
     /* ---------- Motion ---------- */
     .progress {
@@ -345,7 +384,10 @@
     .hero__reels .reel { animation: reel-in 1s cubic-bezier(.2, .8, .2, 1) both, float 6s ease-in-out 1s infinite; }
     .hero__reels .reel:nth-child(2) { animation-delay: .15s, 1.6s; }
     .hero__reels .reel:nth-child(3) { animation-delay: .3s, 2.2s; }
-    @keyframes reel-in { from { opacity: 0; scale: .82; } to { opacity: 1; scale: 1; } }
+    @keyframes reel-in {
+      from { opacity: 0; scale: .82; clip-path: inset(48% 0 48% 0 round 20px); }
+      to { opacity: 1; scale: 1; clip-path: inset(0 round 20px); }
+    }
     @keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
 
     /* 3D tilt on cards (angles set from JS) */
@@ -416,8 +458,7 @@
     .js .about.in .about__pic img { scale: 1; }
 
     /* FAQ */
-    .faq details[open] .faq__answer { animation: faq-in .5s cubic-bezier(.2, .8, .2, 1); }
-    @keyframes faq-in { from { opacity: 0; transform: translateY(-10px); } }
+    .faq__answer { overflow: hidden; }
     .faq summary { transition: color .2s, padding-left .3s cubic-bezier(.2, .8, .2, 1); }
     .faq summary:hover { color: var(--accent); padding-left: 8px; }
 
@@ -443,7 +484,7 @@
     }
     @media (max-width: 900px) {
       .hero__grid, .contact { grid-template-columns: 1fr; }
-      .hero__reels { max-width: 520px; }
+      .hero__reels { max-width: 600px; }
       .price-grid { grid-template-columns: 1fr; max-width: 520px; }
       .section-head--split { grid-template-columns: 1fr; gap: 16px; }
     }
@@ -513,20 +554,20 @@
         </div>
 
         <div class="hero__reels">
-          <button class="reel tone-1" type="button" data-src="" data-poster="" data-tiktok="7437253300933774638" data-author="@garyvee" aria-label="Play Expert video">
+          <button class="reel tone-1" type="button" data-src="assets/video/hero-expert.mp4" data-poster="" aria-label="Play Expert video">
             <span class="reel__tag">Expert</span>
             <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-            <span class="reel__caption">@garyvee · TikTok</span>
+            <span class="reel__caption">[Your video]</span>
           </button>
-          <button class="reel tone-2" type="button" data-src="" data-poster="" data-tiktok="7333618608268021038" data-author="@duolingo" aria-label="Play Brand video">
+          <button class="reel tone-2" type="button" data-src="assets/video/hero-brand.mp4" data-poster="" aria-label="Play Brand video">
             <span class="reel__tag">Brand</span>
             <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-            <span class="reel__caption">@duolingo · TikTok</span>
+            <span class="reel__caption">[Your video]</span>
           </button>
-          <button class="reel tone-3" type="button" data-src="" data-poster="" data-tiktok="7505849400019717406" data-author="@mrbeast" aria-label="Play Creator video">
+          <button class="reel tone-3" type="button" data-src="assets/video/hero-creator.mp4" data-poster="" aria-label="Play Creator video">
             <span class="reel__tag">Creator</span>
             <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-            <span class="reel__caption">@mrbeast · TikTok</span>
+            <span class="reel__caption">[Your video]</span>
           </button>
           <div class="ring" aria-hidden="true">
             <svg class="ring__text" viewBox="0 0 128 128"><defs><path id="ring-path" d="M64,64 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/></defs><text><textPath href="#ring-path" textLength="312">REELS · TIKTOK · SHORTS · EDITS · </textPath></text></svg>
@@ -556,60 +597,60 @@
             <span class="eyebrow">Selected work</span>
             <h2 class="h2 split" id="work-title">Edits for experts, brands and creators</h2>
           </div>
-          <p class="section-head__note">Tap a video to play it with sound. Each card shows the niche and what the edit was built to do.</p>
+          <p class="section-head__note">Videos play on their own — tap one to turn the sound on. Each card shows the niche and what the edit was built to do.</p>
         </div>
 
         <div class="work-grid">
           <article class="work-item" data-reveal>
-            <button class="reel tone-1" type="button" data-src="" data-poster="" data-tiktok="7294004904270531871" data-author="@hubermanlab" aria-label="Play video: Talking-head explainer">
+            <button class="reel tone-1" type="button" data-src="assets/video/work-expert.mp4" data-poster="" aria-label="Play video: Talking-head explainer">
               <span class="reel__tag">Expert</span>
               <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-              <span class="reel__caption">@hubermanlab · TikTok</span>
+              <span class="reel__caption">[Your video]</span>
             </button>
             <h3>Talking-head explainer</h3>
             <p>Hook + captions for a coach</p>
           </article>
           <article class="work-item" data-reveal>
-            <button class="reel tone-2" type="button" data-src="" data-poster="" data-tiktok="7468080638600514859" data-author="@duolingo" aria-label="Play video: Product showcase">
+            <button class="reel tone-2" type="button" data-src="assets/video/work-brand.mp4" data-poster="" aria-label="Play video: Product showcase">
               <span class="reel__tag">Brand</span>
               <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-              <span class="reel__caption">@duolingo · TikTok</span>
+              <span class="reel__caption">[Your video]</span>
             </button>
             <h3>Product showcase</h3>
             <p>Fast cuts for a launch</p>
           </article>
           <article class="work-item" data-reveal>
-            <button class="reel tone-3" type="button" data-src="" data-poster="" data-tiktok="7271280763046448430" data-author="@cookingwithlynja" aria-label="Play video: Café menu reel">
+            <button class="reel tone-3" type="button" data-src="assets/video/work-food.mp4" data-poster="" aria-label="Play video: Café menu reel">
               <span class="reel__tag">Food</span>
               <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-              <span class="reel__caption">@cookingwithlynja · TikTok</span>
+              <span class="reel__caption">[Your video]</span>
             </button>
             <h3>Café menu reel</h3>
             <p>Sound-led b-roll edit</p>
           </article>
           <article class="work-item" data-reveal>
-            <button class="reel tone-4" type="button" data-src="" data-poster="" data-tiktok="7452744033048300830" data-author="@ifbbama" aria-label="Play video: Workout tips">
+            <button class="reel tone-4" type="button" data-src="assets/video/work-fitness.mp4" data-poster="" aria-label="Play video: Workout tips">
               <span class="reel__tag">Fitness</span>
               <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-              <span class="reel__caption">@ifbbama · TikTok</span>
+              <span class="reel__caption">[Your video]</span>
             </button>
             <h3>Workout tips</h3>
             <p>Text overlays, beat sync</p>
           </article>
           <article class="work-item" data-reveal>
-            <button class="reel tone-5" type="button" data-src="" data-poster="" data-tiktok="6789381058484882694" data-author="@ryanserhant" aria-label="Play video: Apartment tour">
+            <button class="reel tone-5" type="button" data-src="assets/video/work-realestate.mp4" data-poster="" aria-label="Play video: Apartment tour">
               <span class="reel__tag">Real estate</span>
               <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-              <span class="reel__caption">@ryanserhant · TikTok</span>
+              <span class="reel__caption">[Your video]</span>
             </button>
             <h3>Apartment tour</h3>
             <p>Smooth walkthrough</p>
           </article>
           <article class="work-item" data-reveal>
-            <button class="reel tone-6" type="button" data-src="" data-poster="" data-tiktok="7458058031817936159" data-author="@hubermanlab" aria-label="Play video: Podcast clip">
+            <button class="reel tone-6" type="button" data-src="assets/video/work-podcast.mp4" data-poster="" aria-label="Play video: Podcast clip">
               <span class="reel__tag">Podcast</span>
               <span class="reel__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"/></svg></span>
-              <span class="reel__caption">@hubermanlab · TikTok</span>
+              <span class="reel__caption">[Your video]</span>
             </button>
             <h3>Podcast clip</h3>
             <p>Best moment, cut to 30s</p>
@@ -846,90 +887,64 @@
 
       // ----- Video cards -----
       var current = null;
-      var embed = null; // { card, box } — the TikTok player that is open now
+      // ----- Video cards: always on, muted, looping -----
+      // A card with data-src gets a muted looping <video> that plays while the card is on screen.
+      // Tapping a card turns its sound on (only one card has sound at a time); tapping again mutes it.
+      var soundCard = null;
+      var soundIcon = '<span class="reel__sound" aria-hidden="true">' +
+        '<svg class="off" viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M22 9l-6 6M16 9l6 6"/></svg>' +
+        '<svg class="on" viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/></svg></span>';
 
-      function closeEmbed(focusCard) {
-        if (!embed) return;
-        var card = embed.card;
-        embed.box.replaceWith(card);
-        embed = null;
-        if (focusCard) card.focus();
+      function setSound(card, on) {
+        var video = card.querySelector('video');
+        if (!video) return;
+        video.muted = !on;
+        card.classList.toggle('has-sound', on);
+        card.setAttribute('aria-pressed', on ? 'true' : 'false');
+        if (on) { if (soundCard && soundCard !== card) setSound(soundCard, false); soundCard = card; }
+        else if (soundCard === card) soundCard = null;
       }
 
-      function openTikTok(card) {
-        if (current) current.pause();
-        closeEmbed(false);
-        var id = card.dataset.tiktok;
-        var box = document.createElement('div');
-        box.className = card.className + ' is-embed';
-        var frame = document.createElement('iframe');
-        frame.className = 'reel__frame';
-        frame.src = 'https://www.tiktok.com/player/v1/' + id + '?autoplay=1&loop=1&rel=0&description=0&music_info=0';
-        frame.title = 'TikTok video by ' + (card.dataset.author || 'creator');
-        frame.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
-        frame.setAttribute('allowfullscreen', '');
-        var close = document.createElement('button');
-        close.type = 'button';
-        close.className = 'reel__close';
-        close.setAttribute('aria-label', 'Close video');
-        close.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
-        close.addEventListener('click', function () { closeEmbed(true); });
-        box.append(frame, close);
-        card.style.removeProperty('--rx'); card.style.removeProperty('--ry');
-        card.replaceWith(box);
-        embed = { card: card, box: box };
-        close.focus();
-      }
+      var videoIO = 'IntersectionObserver' in window && new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var video = en.target.querySelector('video');
+          if (!video) return;
+          if (en.isIntersecting) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+          else video.pause();
+        });
+      }, { rootMargin: '200px 0px' });
 
       document.querySelectorAll('.reel').forEach(function (card) {
         var poster = card.dataset.poster;
-        var label = card.getAttribute('aria-label') || '';
+        var src = card.dataset.src;
+        var label = (card.getAttribute('aria-label') || '').replace(/^Play (video: )?/, '').replace(/ video$/, '');
 
         if (poster) {
           var img = document.createElement('img');
-          img.src = poster;
-          img.alt = '';
-          img.loading = 'lazy';
-          img.className = 'reel__media';
+          img.src = poster; img.alt = ''; img.loading = 'lazy'; img.className = 'reel__media';
           card.prepend(img);
           card.classList.add('has-poster');
         }
+        if (!src) return; // placeholder card: clicking does nothing
 
-        card.addEventListener('click', function () {
-          var src = card.dataset.src;
-          if (!src && card.dataset.tiktok) { openTikTok(card); return; }
-          if (!src) return;
-          closeEmbed(false);
-
-          var video = card.querySelector('video');
-          if (!video) {
-            video = document.createElement('video');
-            video.setAttribute('playsinline', '');
-            video.playsInline = true;
-            video.preload = 'none';
-            video.src = src;
-            if (poster) video.poster = poster;
-            video.className = 'reel__media';
-            video.addEventListener('play', function () {
-              card.classList.add('is-playing');
-              card.setAttribute('aria-label', label.replace(/^Play/, 'Pause'));
-            });
-            video.addEventListener('pause', function () {
-              card.classList.remove('is-playing');
-              card.setAttribute('aria-label', label);
-            });
-            card.prepend(video);
-          }
-
-          if (video.paused) {
-            if (current && current !== video) current.pause();
-            current = video;
-            var p = video.play();
-            if (p && p.catch) p.catch(function () {});
-          } else {
-            video.pause();
-          }
-        });
+        var video = document.createElement('video');
+        video.className = 'reel__media';
+        video.muted = true; video.loop = true; video.playsInline = true;
+        video.setAttribute('muted', ''); video.setAttribute('playsinline', '');
+        video.preload = 'metadata';
+        if (poster) video.poster = poster;
+        video.src = src;
+        video.addEventListener('loadeddata', function () {
+          setTimeout(function () { card.classList.add('is-loaded'); }, 500);
+        }, { once: true });
+        video.addEventListener('error', function () { card.classList.remove('is-live'); });
+        card.prepend(video);
+        card.classList.add('is-live');
+        card.insertAdjacentHTML('beforeend', soundIcon);
+        card.setAttribute('aria-label', 'Sound for ' + label + ' video');
+        card.setAttribute('aria-pressed', 'false');
+        card.addEventListener('click', function () { setSound(card, video.muted); });
+        if (videoIO) videoIO.observe(card); else video.autoplay = true;
       });
 
       // ----- Package buttons -> hidden form field -----
@@ -955,6 +970,28 @@
         form.reset();
         pkgInput.value = '';
         pkgNote.hidden = true;
+      });
+
+      // ----- FAQ: smooth height animation -----
+      if (!reduce) document.querySelectorAll('.faq details').forEach(function (d) {
+        var summary = d.querySelector('summary');
+        var body = d.querySelector('.faq__answer');
+        var anim = null;
+        var ease = 'cubic-bezier(.2, .8, .2, 1)';
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (anim) anim.cancel();
+          if (!d.open) {
+            d.open = true;
+            var h = body.scrollHeight;
+            anim = body.animate([{ height: '0px', opacity: 0, transform: 'translateY(-8px)' }, { height: h + 'px', opacity: 1, transform: 'none' }], { duration: 520, easing: ease });
+            anim.onfinish = function () { anim = null; };
+          } else {
+            var from = body.offsetHeight;
+            anim = body.animate([{ height: from + 'px', opacity: 1 }, { height: '0px', opacity: 0 }], { duration: 400, easing: ease });
+            anim.onfinish = function () { d.open = false; anim = null; };
+          }
+        });
       });
 
       // ----- Motion -----
